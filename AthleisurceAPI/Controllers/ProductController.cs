@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccessLibrary;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +9,13 @@ namespace AthleisurceAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+
+        MongoDBDataAccess db;
+
+        public ProductController()
+        {
+            db = new MongoDBDataAccess();
+        }
         // GET: api/<ProductController>
         [HttpGet]
         public IEnumerable<string> Get()
