@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AthleisurceAPI.Controllers
+namespace DataAccessLibrary.Controllers
 {
     [ApiController]
     [Route("[controller]")]

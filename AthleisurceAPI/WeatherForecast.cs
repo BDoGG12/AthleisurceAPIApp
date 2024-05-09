@@ -1,4 +1,4 @@
-namespace AthleisurceAPI
+namespace DataAccessLibrary
 {
     public class WeatherForecast
     {
