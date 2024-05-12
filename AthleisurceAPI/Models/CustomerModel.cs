@@ -14,6 +14,7 @@ namespace AthleisurceAPI.Models
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
         public ShippingAddressModel Address { get; set; } = new ShippingAddressModel();
-        public List<ProductModel> Products { get; set; } = new List<ProductModel>();
+        public List<ProductModel>? Cart { get; set; }
+        public List<OrderModel>? Orders { get; set; }
     }
 }
