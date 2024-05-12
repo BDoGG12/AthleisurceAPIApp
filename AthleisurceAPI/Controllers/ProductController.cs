@@ -1,5 +1,9 @@
-﻿using DataAccessLibrary;
+﻿using AthleisurceAPI.Models;
+using DataAccessLibrary;
+using DataAccessLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using System.Globalization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,41 +15,79 @@ namespace AthleisurceAPI.Controllers
     {
 
         MongoDBDataAccess db;
+        private readonly IConfiguration _config;
+        private readonly string tableName = "Athleisurce_Customers";
 
-        public ProductController()
+        public ProductController(IConfiguration config)
         {
-            db = new MongoDBDataAccess();
+            _config = config;
+            db = new MongoDBDataAccess("MongoAthleisurceDB", _config.GetConnectionString("Default"));
         }
         // GET: api/<ProductController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("/api/GetCustsomerById/{id}")]
+        public CustomerModel GetCustomerCart(string id)
         {
-            return new string[] { "value1", "value2" };
+            Console.Write($"{id}");
+            Guid guid = new Guid(id);
+            return db.LoadRecordById<CustomerModel>(tableName, guid);
         }
 
-        // GET api/<ProductController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET All Customers
+        [HttpGet("/api/GetAllCustomers")]
+        public List<CustomerModel> GetCustomer()
         {
-            return "value";
+            return db.LoadRecords<CustomerModel>(tableName);
+        }
+
+        // Get Cart
+        [HttpGet("/api/GetCart/{id}")]
+        public List<ProductModel> GetCart(string id)
+        {
+            Guid guid = new Guid(id);
+            var customerInfo = db.LoadRecordById<CustomerModel>(tableName, guid);
+            var cart = customerInfo.Cart;
+            return cart;
+        }
+
+        // Get Orders
+        [HttpGet("/api/GetOrders/{id}")]
+        public List<OrderModel> GetOrder(string id)
+        {
+            Guid guid = new Guid(id);
+            var customerInfo = db.LoadRecordById<CustomerModel>(tableName, guid);
+            var orders = customerInfo.Orders;
+            return orders;
         }
 
         // POST api/<ProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("/api/RegisterCustomer")]
+        public void InsertRegisteredCustomer(CustomerModel customer)
         {
+            db.UpsertRecord<CustomerModel>(tableName, customer.Id, customer);
         }
 
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        [HttpPatch("/api/AddToCart/{id}")]
+        public void AddToCart(string id, ProductModel value)
         {
+            Guid guid = new Guid(id);
+            var updateDefinition = Builders<CustomerModel>.Update.Push(entity => entity.Cart, value);
+            db.UpdateRecord(tableName, guid, updateDefinition);
+        }
+
+        [HttpPatch("/api/RemoveFromCart/{id}")]
+        public void RemoveFromCart(string id, ProductModel value) 
+        {
+            Guid guid = new Guid(id);
+            var updateDefinition = Builders<CustomerModel>.Update.Pull(entity => entity.Cart, value);
+            db.UpdateRecord(tableName, guid, updateDefinition);
         }
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            Console.Write($"deleted {id}");
         }
     }
 }
