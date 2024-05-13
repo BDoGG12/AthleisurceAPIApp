@@ -1,6 +1,6 @@
 # Athleisurce API App
 
-Welcome to the Backend Project Name repository! This project serves as the backend for an e-commerce web application built using Next.js on the frontend. The backend is implemented in C# to create a Web API that communicates with MongoDB.
+Welcome to the AthleisurceAPIApp repository! This project serves as the backend for the Athleisurce e-commerce web application built using Next.js on the frontend. The backend is implemented in C# to create a Web API that communicates with MongoDB.
 
 ## Table of Contents
 
