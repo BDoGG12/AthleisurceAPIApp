@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace DataAccessLibrary
             return collection.Find(new BsonDocument()).ToList();
         }
 
-        public T LoadRecordById<T>(string tableName, int id)
+        public T LoadRecordById<T>(string tableName, Guid id)
         {
             var collection = db.GetCollection<T>(tableName);
             var filter = Builders<T>.Filter.Eq("Id", id);
@@ -43,7 +44,6 @@ namespace DataAccessLibrary
         public void UpsertRecord<T>(string tableName, Guid id, T record)
         {
             var collection = db.GetCollection<T>(tableName);
-
             var result = collection.ReplaceOne(
                 new BsonDocument("_id", id),
                 record,
@@ -55,6 +55,13 @@ namespace DataAccessLibrary
             var collection = db.GetCollection<T>(tableName);
             var filter = Builders<T>.Filter.Eq("Id", id);
             collection.DeleteOne(filter);
+        }
+
+        public void UpdateRecord<T>(string tableName, Guid id, UpdateDefinition<T> updateDefinition)
+        {
+            var collection = db.GetCollection<T>(tableName);
+            var filter = Builders<T>.Filter.Eq("Id", id);
+            collection.UpdateOne(filter, updateDefinition);
         }
     }
 }
