@@ -25,7 +25,7 @@ namespace AthleisurceAPI.Controllers
         }
         // GET: api/<CustomerController>
         [HttpGet("/api/GetCustsomerById/{id}")]
-        public CustomerModel GetCustomerCart(string id)
+        public CustomerModel GetCustomerById(string id)
         {
             Console.Write($"{id}");
             Guid guid = new Guid(id);
