@@ -16,7 +16,7 @@ namespace AthleisurceAPI.Controllers
             _customerCollection = database.GetCollection<CustomerModel>("Athleisurce_Customers");
         }
 
-        [HttpPost("api/login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _customerCollection.Find(u => u.EmailAddress == request.Email && u.Password == request.Password).FirstOrDefaultAsync();
