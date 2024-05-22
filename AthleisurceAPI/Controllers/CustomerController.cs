@@ -1,6 +1,7 @@
 ﻿using AthleisurceAPI.Models;
 using DataAccessLibrary;
 using DataAccessLibrary.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System.Globalization;
@@ -44,7 +45,7 @@ namespace AthleisurceAPI.Controllers
         [HttpPost("/api/RegisterCustomer")]
         public void InsertRegisteredCustomer(CustomerModel customer)
         {
-            db.UpsertRecord<CustomerModel>(tableName, customer.Id, customer);
+            db.InsertRecord<CustomerModel>(tableName, customer);
         }
 
 

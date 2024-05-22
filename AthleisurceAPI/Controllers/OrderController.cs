@@ -1,5 +1,6 @@
 ﻿using AthleisurceAPI.Models;
 using AthleisurceAPI.Service;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
